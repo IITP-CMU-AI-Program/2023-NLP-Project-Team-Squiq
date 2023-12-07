@@ -1,5 +1,6 @@
 from torch.utils.data import Dataset
 
+
 class ConversationDataset(Dataset):
     def __init__(self, patient_questions, doctor_answers, segment_embeddings):
         self.patient_questions = patient_questions
@@ -11,10 +12,11 @@ class ConversationDataset(Dataset):
 
     def __getitem__(self, idx):
         return {
-            'patient_question': self.patient_questions[idx],
-            'doctor_answer': self.doctor_answers[idx],
-            'segment_embedding': self.segment_embeddings[idx]
+            "patient_question": self.patient_questions[idx],
+            "doctor_answer": self.doctor_answers[idx],
+            "segment_embedding": self.segment_embeddings[idx],
         }
+
 
 class WikiDataset(Dataset):
     def __init__(self, input, label, segment_embeddings):
@@ -27,7 +29,7 @@ class WikiDataset(Dataset):
 
     def __getitem__(self, idx):
         return {
-            'input': self.input[idx],
-            'label': self.label[idx],
-            'segment_embedding': self.segment_embeddings[idx]
+            "input": self.input[idx],
+            "label": self.label[idx],
+            "segment_embedding": self.segment_embeddings[idx],
         }

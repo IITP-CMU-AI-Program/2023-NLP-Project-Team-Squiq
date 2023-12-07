@@ -3,6 +3,7 @@ import torch.nn as nn
 
 import math
 
+
 class EmbeddingBlock(nn.Module):
     """
     Arguments:
@@ -12,18 +13,23 @@ class EmbeddingBlock(nn.Module):
 
     def __init__(self, num_embeddings, embedding_dim):
         super(EmbeddingBlock, self).__init__()
-        max_seq_len =512
+        max_seq_len = 512
         self.embedding_dim = embedding_dim
-        self.pos_units = [10000**(2*i/self.embedding_dim) for i in range(self.embedding_dim//2)]
+        self.pos_units = [
+            10000 ** (2 * i / self.embedding_dim)
+            for i in range(self.embedding_dim // 2)
+        ]
 
-        self.embedding = nn.Embedding(num_embeddings=num_embeddings, embedding_dim=embedding_dim)
+        self.embedding = nn.Embedding(
+            num_embeddings=num_embeddings, embedding_dim=embedding_dim
+        )
 
         pos = torch.zeros((max_seq_len, self.embedding_dim))
         for p in range(max_seq_len):
             for i in range(0, self.embedding_dim, 2):
                 pos[p, i] = torch.sin(torch.tensor(p) / self.pos_units[i // 2])
                 pos[p, i + 1] = torch.cos(torch.tensor(p) / self.pos_units[i // 2])
-        self.register_buffer('pos', pos)
+        self.register_buffer("pos", pos)
 
     def forward(self, x):
         """
@@ -103,21 +109,27 @@ class MultiHeadAttentionBlock(nn.Module):
 
         self.num_attention = num_attention
 
-        self.heads = nn.ModuleList([AttentionBlock(in_channel, in_channel // self.num_attention) for _ in range(num_attention)])
+        self.heads = nn.ModuleList(
+            [
+                AttentionBlock(in_channel, in_channel // self.num_attention)
+                for _ in range(num_attention)
+            ]
+        )
         self.flatten = nn.Flatten()
 
-        self.fc = nn.Linear(in_channel, in_channel)   # W^O
+        self.fc = nn.Linear(in_channel, in_channel)  # W^O
 
         self.ln1 = nn.LayerNorm((in_channel))
 
-
-        self.ffc = nn.Sequential(nn.Linear(in_channel, hidden_channel),        # Position-wise Feed-Forward Networks
-                                    nn.ReLU(),
-                                    nn.Linear(hidden_channel, in_channel)
-                                )
+        self.ffc = nn.Sequential(
+            nn.Linear(
+                in_channel, hidden_channel
+            ),  # Position-wise Feed-Forward Networks
+            nn.ReLU(),
+            nn.Linear(hidden_channel, in_channel),
+        )
 
         self.ln2 = nn.LayerNorm((in_channel))
-
 
     def forward(self, x):
         """
@@ -146,7 +158,15 @@ class TransformerEncoder(nn.Module):
         use_embedding : Transformer embedding enabled or not
     """
 
-    def __init__(self, num_embeddings, num_enc_layers=6, embedding_dim=512, num_attention=8, hidden_channel=2048, use_embedding=True):
+    def __init__(
+        self,
+        num_embeddings,
+        num_enc_layers=6,
+        embedding_dim=512,
+        num_attention=8,
+        hidden_channel=2048,
+        use_embedding=True,
+    ):
         super(TransformerEncoder, self).__init__()
 
         self.num_enc_layers = num_enc_layers
@@ -158,11 +178,16 @@ class TransformerEncoder(nn.Module):
         if use_embedding:
             self.embedding = EmbeddingBlock(num_embeddings, embedding_dim)
 
-
-        self.multihead_attention_blocks = nn.ModuleList([MultiHeadAttentionBlock(in_channel=self.embedding_dim,
-                                                                       num_attention=self.num_attention,
-                                                                       hidden_channel=self.hidden_channel)
-                                                                            for _ in range(self.num_enc_layers)])
+        self.multihead_attention_blocks = nn.ModuleList(
+            [
+                MultiHeadAttentionBlock(
+                    in_channel=self.embedding_dim,
+                    num_attention=self.num_attention,
+                    hidden_channel=self.hidden_channel,
+                )
+                for _ in range(self.num_enc_layers)
+            ]
+        )
 
     def forward(self, x):
         """
