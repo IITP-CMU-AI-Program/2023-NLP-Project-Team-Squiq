@@ -1,7 +1,0 @@
-0	prevention
-1	cause
-2	symptom
-3	treatment
-4	susceptible_population
-5	alias
-6	function

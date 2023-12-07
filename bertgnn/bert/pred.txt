@@ -1,0 +1,4 @@
+[Epoch] 1
+Patient      :['sos hi i’ve had a cold since 13 march i have since started coughing and just don’t seem to be recovering one day i will be feeling fine and the next day back to feeling terrible lots of tight phlegm and very sore throat eos sep sos hi i’ve had a cold since 13 march i have since started coughing and just don’t seem to be recovering one day i will be feeling fine and the next day back to feeling terrible lots of tight phlegm and very sore throat eos']
+Doctor(targ) :['sos in brief too soon to recover on aveage viral respiratory illnesses may take 2 3 weeks for full recovery and severe cases may take 4 6 weeks if your symptoms worsen you should contact your health care provider to inquire regarding corona virus testing or quarantine would you like to video or text chat with me eos']
+Doctor(pred) :['']

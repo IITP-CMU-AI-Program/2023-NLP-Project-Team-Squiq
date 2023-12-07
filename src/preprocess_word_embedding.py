@@ -3,13 +3,13 @@ from collections import defaultdict
 
 
 def preprocess_word_embedding():
-    if os.path.isfile("../raw/node_info_new.txt"):
-        os.remove("../raw/node_info_new.txt")
+    if os.path.isfile("../bertgnn/rawKG/node_info_new.txt"):
+        os.remove("../bertgnn/rawKG/node_info_new.txt")
 
     nodelist = defaultdict(int)
     word2embidx = {}
 
-    with open("../raw/node_info.txt", "r") as f:
+    with open("../bertgnn/rawKG/node_info.txt", "r") as f:
         for line in f.readlines():
             vidx, nodename = line.rstrip().split("\t")
             nodes = nodename.split(" ")
@@ -17,7 +17,7 @@ def preprocess_word_embedding():
                 for node in nodes:
                     nodelist[node] += 1
 
-    with open("../raw/node_info.txt", "r") as f:
+    with open("../bertgnn/rawKG/node_info.txt", "r") as f:
         for line in f.readlines():
             vidx, nodename = line.rstrip().split("\t")
             vidx = int(vidx)
@@ -27,7 +27,7 @@ def preprocess_word_embedding():
                     if nodelist[node] < 2:
                         word2embidx[node] = vidx
 
-    with open("../raw/node_info_new.txt", "w") as f:
+    with open("../bertgnn/rawKG/node_info_new.txt", "w") as f:
         for word, embidx in word2embidx.items():
             f.write(f"{word}\t{embidx}\n")
 
