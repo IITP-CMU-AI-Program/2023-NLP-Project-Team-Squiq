@@ -14,16 +14,16 @@ def make_generation_text(inp, pred):
     return outputs
 
 
-if os.path.isfile("./bert/loss.txt"):
-    os.remove("./bert/loss.txt")
-if os.path.isfile("./bert/pred.txt"):
-    os.remove("./bert/pred.txt")
+if os.path.isfile("logs/loss.txt"):
+    os.remove("logs/loss.txt")
+if os.path.isfile("logs/pred.txt"):
+    os.remove("logs/pred.txt")
 
-with open("../data/english-train.json", "r") as json_file:
+with open("../../data/english-train.json", "r") as json_file:
     english_train = json.load(json_file)
-with open("../data/english-dev.json", "r") as json_file:
+with open("../../data/english-dev.json", "r") as json_file:
     english_dev = json.load(json_file)
-with open("../data/english-test.json", "r") as json_file:
+with open("../../data/english-test.json", "r") as json_file:
     english_test = json.load(json_file)
 
 context_seq = []
@@ -541,10 +541,10 @@ conversation_dataloader_test = DataLoader(
 print(len(conversation_dataloader_test))
 
 # Replace Word Embedding by Graph Embedding -----------------------------------------------
-wordembeddings = torch.from_numpy(np.load("./emb/node_embedding_384.npy"))
+wordembeddings = torch.from_numpy(np.load("../emb/node_embedding_384.npy"))
 
 word2embidx = {}
-with open("./rawKG/node_info_new.txt", "r") as f:
+with open("../rawKG/node_info_new.txt", "r") as f:
     for line in f.readlines():
         word, embidx = line.rstrip().split("\t")
         embidx = int(embidx)
@@ -672,7 +672,7 @@ for epoch in range(num_epochs):  # num_epochs should be defined
                 for seq in pred.cpu().tolist()
             ]
             generated = tokenizer.sequences_to_texts(generated)
-            with open("./bert/pretrain_gen/gen.txt", "w") as fw:
+            with open("pretrain_gen/gen.txt", "w") as fw:
                 fw.write(make_generation_text(inp, generated))
 
             if i == 1:
@@ -701,7 +701,7 @@ for epoch in range(num_epochs):  # num_epochs should be defined
                 print("===============================================")
 
             if epoch % 100 == 0 and i == 1:
-                with open("./bert/pred.txt", "+a") as f:
+                with open("logs/pred.txt", "+a") as f:
                     f.write("[Epoch] " + str(epoch + 1) + "\n")
                     temp = [
                         seq[: seq.index(0)] if seq.count(0) != 0 else seq
@@ -738,7 +738,7 @@ for epoch in range(num_epochs):  # num_epochs should be defined
         f"Epoch {epoch+1}/{num_epochs}, Test  Loss: {total_loss_test/len(conversation_dataloader_test)}"
     )
 
-    with open("./bert/loss.txt", "+a") as f:
+    with open("logs/loss.txt", "+a") as f:
         f.write(
             f"Epoch {epoch+1}/{num_epochs}, Train Loss: {total_loss/len(conversation_dataloader)}\n"
         )

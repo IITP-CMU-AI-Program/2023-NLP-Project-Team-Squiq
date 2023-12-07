@@ -50,16 +50,16 @@ def make_generation_text(inp, pred):
     return outputs
 
 
-if os.path.isfile("./bert/loss_pretrained.txt"):
-    os.remove("./bert/loss_pretrained.txt")
-if os.path.isfile("./bert/pred_pretrained.txt"):
-    os.remove("./bert/pred_pretrained.txt")
+if os.path.isfile("logs/loss_pretrained.txt"):
+    os.remove("logs/loss_pretrained.txt")
+if os.path.isfile("logs/pred_pretrained.txt"):
+    os.remove("logs/pred_pretrained.txt")
 
-with open("../data/english-train.json", "r") as json_file:
+with open("../../data/english-train.json", "r") as json_file:
     english_train = json.load(json_file)
-with open("../data/english-dev.json", "r") as json_file:
+with open("../../data/english-dev.json", "r") as json_file:
     english_dev = json.load(json_file)
-with open("../data/english-test.json", "r") as json_file:
+with open("../../data/english-test.json", "r") as json_file:
     english_test = json.load(json_file)
 
 device = "cuda:0" if torch.cuda.is_available() else "cpu"
@@ -168,10 +168,10 @@ model = BertModel(config)
 model = model.to(device)
 
 # Replace Word Embedding by Graph Embedding -----------------------------------------------
-wordembeddings = torch.from_numpy(np.load("./emb/node_embedding_768.npy"))
+wordembeddings = torch.from_numpy(np.load("../emb/node_embedding_768.npy"))
 
 word2embidx = {}
-with open("./rawKG/node_info_new.txt", "r") as f:
+with open("../rawKG/node_info_new.txt", "r") as f:
     for line in f.readlines():
         word, embidx = line.rstrip().split("\t")
         embidx = int(embidx)
@@ -265,7 +265,7 @@ for epoch in range(num_epochs):
                 print("===============================================")
 
             if epoch % 100 == 0 and i == 1:
-                with open("./bert/pred_pretrained.txt", "+a") as f:
+                with open("pred_pretrained.txt", "+a") as f:
                     f.write("[Epoch] " + str(epoch + 1) + "\n")
                     f.write(
                         "Patient      :"
@@ -298,7 +298,7 @@ for epoch in range(num_epochs):
         f"Epoch {epoch+1}/{num_epochs}, Test  Loss: {total_loss_test/len(testloader)}"
     )
 
-    with open("./bert/pretrain_log.txt", "+a") as f:
+    with open("logs/pretrain_log.txt", "+a") as f:
         f.write(
             f"Epoch {epoch+1}/{num_epochs}, Train Loss: {running_loss/len(dataloader)}\n"
         )

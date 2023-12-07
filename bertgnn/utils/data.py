@@ -81,7 +81,7 @@ class MaskEdge:
 class Dataset(InMemoryDataset):
     def __init__(
         self,
-        root="./",
+        root="../",
         name=None,
         p2raw=None,
         train_percent=0.01,
@@ -139,7 +139,7 @@ class Dataset(InMemoryDataset):
     def download(self):
         nodeset = set()
         edge_index = [[], []]
-        with open("./rawKG/edges.txt", "r") as f:
+        with open("../rawKG/edges.txt", "r") as f:
             for line in f.readlines():
                 vi, vj = line.rstrip().split("\t")
                 vi, vj = int(vi), int(vj)
@@ -148,8 +148,8 @@ class Dataset(InMemoryDataset):
                 edge_index[0].append(vi)
                 edge_index[1].append(vj)
         edge_index = torch.LongTensor(edge_index)
-        edgefeat = torch.from_numpy(np.load("./rawKG/edge_feat.npy"))
-        edgelabel = torch.FloatTensor(np.load("./rawKG/edge_label.npy"))
+        edgefeat = torch.from_numpy(np.load("../rawKG/edge_feat.npy"))
+        edgelabel = torch.FloatTensor(np.load("../rawKG/edge_label.npy"))
         dist = defaultdict(int)
         for li in range(edgelabel.shape[0]):
             labellist = edgelabel[li]
@@ -157,7 +157,7 @@ class Dataset(InMemoryDataset):
                 if labellist[label] == 1:
                     dist[label] += 1
         #         print(dist)
-        x = torch.FloatTensor(np.load("./rawKG/node_feat.npy")).squeeze(1)
+        x = torch.FloatTensor(np.load("../rawKG/node_feat.npy")).squeeze(1)
 
         data = Data(
             x=x,

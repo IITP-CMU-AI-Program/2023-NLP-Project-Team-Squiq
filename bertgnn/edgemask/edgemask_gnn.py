@@ -1,6 +1,6 @@
 import argparse
 
-from dataset import *
+from bertgnn.utils.data import *
 
 # from loader import BioDataset
 # from dataloader import DataLoaderMasking
@@ -13,7 +13,7 @@ import torch.optim as optim
 from tqdm import tqdm
 import numpy as np
 
-from model import GNN  # , GNN_graphpred
+from bertgnn.utils.model import GNN  # , GNN_graphpred
 
 import pandas as pd
 
@@ -134,7 +134,7 @@ def main():
     parser.add_argument(
         "--model_file",
         type=str,
-        default="./model/",
+        default="../model/",
         help="filename to output the model",
     )
     parser.add_argument(
@@ -159,8 +159,8 @@ def main():
 
     print("num layer: %d mask rate: %f" % (args.num_layer, args.mask_rate))
 
-    if os.path.isfile("edgemask/train_loss_and_acc.txt"):
-        os.remove("edgemask/train_loss_and_acc.txt")
+    if os.path.isfile("logs/train_loss_and_acc.txt"):
+        os.remove("logs/train_loss_and_acc.txt")
 
     # set up dataset
     #     data = Dataset()
@@ -204,7 +204,7 @@ def main():
             epoch, args, data_list, model_list, optimizer_list, device
         )
         print(train_loss, train_acc)
-        with open("edgemask/train_loss_and_acc.txt", "+a") as f:
+        with open("logs/train_loss_and_acc.txt", "+a") as f:
             f.write(str(train_loss) + "\t" + str(train_acc) + "\n")
 
     if not args.model_file == "":
