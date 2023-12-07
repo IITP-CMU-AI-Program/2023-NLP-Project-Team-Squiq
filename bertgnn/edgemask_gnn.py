@@ -159,8 +159,8 @@ def main():
 
     print("num layer: %d mask rate: %f" % (args.num_layer, args.mask_rate))
 
-    if os.path.isfile("edgemask/log.txt"):
-        os.remove("edgemask/log.txt")
+    if os.path.isfile("edgemask/train_loss_and_acc.txt"):
+        os.remove("edgemask/train_loss_and_acc.txt")
 
     # set up dataset
     #     data = Dataset()
@@ -204,7 +204,7 @@ def main():
             epoch, args, data_list, model_list, optimizer_list, device
         )
         print(train_loss, train_acc)
-        with open("edgemask/log.txt", "+a") as f:
+        with open("edgemask/train_loss_and_acc.txt", "+a") as f:
             f.write(str(train_loss) + "\t" + str(train_acc) + "\n")
 
     if not args.model_file == "":

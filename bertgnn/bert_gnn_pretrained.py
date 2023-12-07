@@ -50,10 +50,10 @@ def make_generation_text(inp, pred):
     return outputs
 
 
-if os.path.isfile("./bert/pretrain_log.txt"):
-    os.remove("./bert/pretrain_log.txt")
-if os.path.isfile("./bert/pretrain_pred.txt"):
-    os.remove("./bert/pretrain_pred.txt")
+if os.path.isfile("./bert/loss_pretrained.txt"):
+    os.remove("./bert/loss_pretrained.txt")
+if os.path.isfile("./bert/pred_pretrained.txt"):
+    os.remove("./bert/pred_pretrained.txt")
 
 with open("../data/english-train.json", "r") as json_file:
     english_train = json.load(json_file)
@@ -265,7 +265,7 @@ for epoch in range(num_epochs):
                 print("===============================================")
 
             if epoch % 100 == 0 and i == 1:
-                with open("./bert/pretrain_pred.txt", "+a") as f:
+                with open("./bert/pred_pretrained.txt", "+a") as f:
                     f.write("[Epoch] " + str(epoch + 1) + "\n")
                     f.write(
                         "Patient      :"

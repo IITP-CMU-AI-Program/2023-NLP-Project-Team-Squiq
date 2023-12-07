@@ -14,8 +14,8 @@ def make_generation_text(inp, pred):
     return outputs
 
 
-if os.path.isfile("./bert/log.txt"):
-    os.remove("./bert/log.txt")
+if os.path.isfile("./bert/loss.txt"):
+    os.remove("./bert/loss.txt")
 if os.path.isfile("./bert/pred.txt"):
     os.remove("./bert/pred.txt")
 
@@ -738,7 +738,7 @@ for epoch in range(num_epochs):  # num_epochs should be defined
         f"Epoch {epoch+1}/{num_epochs}, Test  Loss: {total_loss_test/len(conversation_dataloader_test)}"
     )
 
-    with open("./bert/log.txt", "+a") as f:
+    with open("./bert/loss.txt", "+a") as f:
         f.write(
             f"Epoch {epoch+1}/{num_epochs}, Train Loss: {total_loss/len(conversation_dataloader)}\n"
         )
