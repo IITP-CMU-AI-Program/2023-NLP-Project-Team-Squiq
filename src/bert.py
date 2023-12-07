@@ -3,7 +3,7 @@ import torch.nn as nn
 
 import math
 
-from src.TransformerEncoder import TransformerEncoder
+from src.transformer import TransformerEncoder
 
 
 class SegmentEmbedding(
