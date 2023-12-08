@@ -5,7 +5,7 @@ import numpy as np
 
 n_tests = 29
 
-with open("pretrain_gen/gen.txt", "r", encoding="utf-8") as f:
+with open("logs/gen.txt", "r", encoding="utf-8") as f:
     generated = list(f)
 
 assert len(generated) == n_tests
